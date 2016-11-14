@@ -1,7 +1,5 @@
 package http
 
-import "encoding/json"
-
 type APIGatewayReq struct {
 	Resource       string            `json:"resource,omitempty"`
 	Path           string            `json:"path,omitempty"`
@@ -11,7 +9,7 @@ type APIGatewayReq struct {
 	PathParams     map[string]string `json:"pathParameters,omitempty"`
 	StageVars      map[string]string `json:"stageVariables,omitempty"`
 	RequestContext APIGatewayCtx     `json:"requestContext,omitempty"`
-	Body           json.RawMessage   `json:"body,omitempty"`
+	Body           interface{}       `json:"body,omitempty"`
 	IsB64Encoded   bool              `json:"isBase64Encoded,omitempty"`
 }
 
@@ -43,6 +41,6 @@ type APIGatewayIdentity struct {
 
 type APIGatewayResp struct {
 	StatusCode int               `json:"statusCode,omitempty"`
-	Body       string            `json:"body,omitempty"`
+	Body       interface{}       `json:"body,omitempty"`
 	Headers    map[string]string `json:"headers,omitempty"`
 }

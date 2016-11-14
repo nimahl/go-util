@@ -1,5 +1,3 @@
-// +build integration
-
 package util
 
 import (
@@ -64,5 +62,5 @@ func TestCalculateGeo(t *testing.T) {
 		t.Fatal(err)
 	}
 	r := resp.(http.APIGatewayResp)
-	t.Log(string(r.Body))
+	t.Log(r.Body)
 }

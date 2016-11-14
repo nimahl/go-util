@@ -78,15 +78,7 @@ func respond(resp interface{}, err error) (interface{}, error) {
 		}, err
 	}
 
-
-	b, err := json.Marshal(resp)
-	if err != nil {
-		return apexhttp.APIGatewayResp{
-			StatusCode: 500,
-		}, err
-	}
 	var headers = map[string]string{"Content-Type": "application/json"}
-
 
 	if err != nil {
 		return apexhttp.APIGatewayResp{
@@ -95,7 +87,7 @@ func respond(resp interface{}, err error) (interface{}, error) {
 	}
 	agr := apexhttp.APIGatewayResp{
 		StatusCode: 200,
-		Body:       string(b),
+		Body:       resp,
 		Headers:    headers,
 	}
 	return agr, nil
