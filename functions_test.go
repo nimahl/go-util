@@ -101,17 +101,25 @@ var eventJson = json.RawMessage(`
 `)
 
 func TestCalculateGeo(t *testing.T) {
-	resp, err := CalculateGeo().Handle(eventJson, &apex.Context{})
-	if err != nil {
-		t.Fatal(err)
+	for _, tc := range []struct {
+		name  string
+		event json.RawMessage
+	}{
+		{
+			name:  "proper json",
+			event: eventJson,
+		},
+		{
+			name:  "escaped string",
+			event: eventString,
+		},
+	} {
+		t.Logf("testing %q", tc.name)
+		resp, err := CalculateGeo().Handle(tc.event, &apex.Context{})
+		if err != nil {
+			t.Fatal(err)
+		}
+		r := resp.(http.APIGatewayResp)
+		t.Log(r.Body)
 	}
-	r := resp.(http.APIGatewayResp)
-	t.Log(r.Body)
-
-	resp, err = CalculateGeo().Handle(eventString, &apex.Context{})
-	if err != nil {
-		t.Fatal(err)
-	}
-	r = resp.(http.APIGatewayResp)
-	t.Log(r.Body)
 }
