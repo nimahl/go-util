@@ -18,11 +18,14 @@ func CalculateGeo() apex.HandlerFunc {
 			return nil, err
 		}
 
+		var fromGateway bool
 		var mBody map[string]interface{}
 		switch agr.Body.(type) {
 		case string:
 			json.Unmarshal([]byte(agr.Body.(string)), &mBody)
+			fromGateway = true
 		case map[string]interface{}:
+			fromGateway = false
 			mBody = agr.Body.(map[string]interface{})
 		}
 
@@ -44,7 +47,7 @@ func CalculateGeo() apex.HandlerFunc {
 			return nil, err
 		}
 
-		return respond(resp, err)
+		return respond(resp, fromGateway, err)
 	}
 }
 
@@ -81,7 +84,7 @@ func postRequest(body map[string]interface{}) (*mapApi.GeoReq, error) {
 	return &p, nil
 }
 
-func respond(resp interface{}, err error) (interface{}, error) {
+func respond(resp interface{}, gw bool, err error) (interface{}, error) {
 	if err != nil {
 		return apexhttp.APIGatewayResp{
 			StatusCode: 500,
@@ -95,10 +98,18 @@ func respond(resp interface{}, err error) (interface{}, error) {
 			StatusCode: 500,
 		}, err
 	}
-	agr := apexhttp.APIGatewayResp{
+	if gw {
+		b, _ := json.Marshal(resp)
+		return apexhttp.APIGatewayResp{
+			StatusCode: 200,
+			Body:       string(b),
+			Headers:    headers,
+		}, nil
+	}
+
+	return apexhttp.APIGatewayResp{
 		StatusCode: 200,
 		Body:       resp,
 		Headers:    headers,
-	}
-	return agr, nil
+	}, nil
 }
