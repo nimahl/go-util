@@ -43,6 +43,6 @@ type APIGatewayIdentity struct {
 
 type APIGatewayResp struct {
 	StatusCode int               `json:"statusCode,omitempty"`
-	Body       json.RawMessage   `json:"body,omitempty"`
+	Body       string            `json:"body,omitempty"`
 	Headers    map[string]string `json:"headers,omitempty"`
 }
