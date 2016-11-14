@@ -10,12 +10,12 @@ import (
 	"googlemaps.github.io/maps"
 )
 
-type googleGeo struct {
+type GoogleGeo struct {
 	client *maps.Client
 }
 
-func NewGoogleGeo(apiKey string) *googleGeo {
-	g := new(googleGeo)
+func NewGoogleGeo(apiKey string) *GoogleGeo {
+	g := new(GoogleGeo)
 	client, err := maps.NewClient(maps.WithAPIKey(apiKey))
 	if err != nil {
 		log.Fatal(err)
@@ -24,7 +24,7 @@ func NewGoogleGeo(apiKey string) *googleGeo {
 	return g
 }
 
-func (g *googleGeo) ResolveLocation(req *GeoReq) (*GeoResp, error) {
+func (g *GoogleGeo) ResolveLocation(req *GeoReq) (*GeoResp, error) {
 
 	gcr := &maps.GeocodingRequest{
 		Address:  req.Postcode,
