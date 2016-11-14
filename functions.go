@@ -17,20 +17,29 @@ func CalculateGeo() apex.HandlerFunc {
 		if err := json.Unmarshal(event, &agr); err != nil {
 			return nil, err
 		}
+
+		var mBody map[string]interface{}
+		switch agr.Body.(type) {
+		case string:
+			json.Unmarshal([]byte(agr.Body.(string)), &mBody)
+		case map[string]interface{}:
+			mBody = agr.Body.(map[string]interface{})
+		}
+
 		var geoReq *mapApi.GeoReq
 		var err error
 		switch agr.Method {
 		case "POST":
-			geoReq, err = postRequest(agr.Body)
+			geoReq, err = postRequest(mBody)
 		case "GET":
 			geoReq, err = getRequest(agr.PathParams)
 		default:
 			// Invalid method
-		return nil, fmt.Errorf("Invalid method")
+			return nil, fmt.Errorf("Invalid method")
 		}
 
 		client := mapApi.NewGoogleGeo(apiKey)
-		resp , err := client.ResolveLocation(geoReq)
+		resp, err := client.ResolveLocation(geoReq)
 		if err != nil {
 			return nil, err
 		}
@@ -58,14 +67,15 @@ func getRequest(params map[string]string) (*mapApi.GeoReq, error) {
 	}
 	return &mapApi.GeoReq{
 		Postcode: postcode,
-		Lang: language,
-		Region: region,
+		Lang:     language,
+		Region:   region,
 	}, nil
 }
 
-func postRequest(body []byte) (*mapApi.GeoReq, error) {
+func postRequest(body map[string]interface{}) (*mapApi.GeoReq, error) {
 	var p mapApi.GeoReq
-	if err := json.Unmarshal(body, &p); err != nil {
+	b, _ := json.Marshal(body)
+	if err := json.Unmarshal(b, &p); err != nil {
 		return nil, err
 	}
 	return &p, nil
