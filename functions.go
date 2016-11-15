@@ -32,13 +32,13 @@ func CalculateGeo() apex.HandlerFunc {
 		var geoReq *mapApi.GeoReq
 		var err error
 		switch agr.Method {
-		case "POST":
+		case "POST", "":
 			geoReq, err = postRequest(mBody)
 		case "GET":
 			geoReq, err = getRequest(agr.PathParams)
 		default:
 			// Invalid method
-			return nil, fmt.Errorf("Invalid method")
+			return nil, fmt.Errorf("Invalid method %q", agr.Method)
 		}
 
 		client := mapApi.NewGoogleGeo(apiKey)

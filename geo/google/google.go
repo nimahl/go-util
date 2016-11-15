@@ -45,6 +45,7 @@ func (g *GoogleGeo) ResolveLocation(req *GeoReq) (*GeoResp, error) {
 		Lat:    googleResp[0].Geometry.Location.Lat,
 		Long:   googleResp[0].Geometry.Location.Lng,
 		FmtAdd: googleResp[0].FormattedAddress,
+		Type:   googleResp[0].Geometry.LocationType,
 	}, nil
 }
 
