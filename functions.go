@@ -9,7 +9,7 @@ import (
 	"github.com/apex/go-apex"
 )
 
-var apiKey = "AIzaSyC_dFResqlzZdLUUUvvj1nbQEbiPIzC_eo"
+var apiKey = "AIzaSyCRF57MkUiHXRET0wYEUW9XTXZ5pwBwBgU"
 
 func CalculateGeo() apex.HandlerFunc {
 	return func(event json.RawMessage, ctx *apex.Context) (interface{}, error) {

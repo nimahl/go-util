@@ -3,6 +3,7 @@ package google
 import (
 	"context"
 	"log"
+	"time"
 
 	"strconv"
 	"strings"
@@ -37,7 +38,9 @@ func (g *GoogleGeo) ResolveLocation(req *GeoReq) (*GeoResp, error) {
 	parseResultType(req.ResultType, gcr)
 	parseLocationType(req.LocationType, gcr)
 
-	googleResp, err := g.client.Geocode(context.Background(), gcr)
+	ctx, cancelFunc := context.WithTimeout(context.Background(), time.Second*2)
+	defer cancelFunc()
+	googleResp, err := g.client.Geocode(ctx, gcr)
 	if err != nil {
 		return nil, err
 	}
