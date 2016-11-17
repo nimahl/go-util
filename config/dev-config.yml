@@ -1,5 +1,0 @@
-region: eu-west-1
-majorVersion: "v1"
-memorySize: 512
-timeout: 10
-cors: true
