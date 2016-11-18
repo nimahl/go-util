@@ -1,8 +1,0 @@
-{
-  "name": "util-functions",
-  "description": "Apex and Serverless Utility functions",
-  "memory": 256,
-  "timeout": 5,
-  "role": "arn:aws:iam::556748783639:role/lambda_basic_execution",
-  "environment": {}
-}
